@@ -1,0 +1,5 @@
+<RCC>
+  <qresource prefix="next">
+    <file>avance-rapido.gif</file>
+  </qresource>
+</RCC>

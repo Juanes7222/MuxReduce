@@ -1,0 +1,70 @@
+QPushButton {
+    background-color: #4CAF50;   /* Verde */
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    border-radius: 10px;
+}
+
+QPushButton:hover {
+    background-color: #45a049;   /* Un verde más oscuro cuando pasas el mouse */
+}
+
+QPushButton:pressed {
+    background-color: #3e8e41;   /* Un verde más oscuro cuando se presiona */
+}
+
+QTableWidget {
+    gridline-color: #dadada;  /* Color de las líneas de la cuadrícula */
+    background-color: #F9F9F9;  /* Fondo de la tabla */
+    alternate-background-color: #E0E0E0;  /* Fondo alternado para las filas */
+    selection-background-color: #FFA07A;  /* Fondo para la fila seleccionada */
+    selection-color: #555;  /* Color del texto de la fila seleccionada */
+    color: #000;
+}
+
+QHeaderView::section {
+    background-color: #4CAF50;  /* Fondo de los encabezados */
+    color: white;  /* Color del texto de los encabezados */
+    padding: 4px;
+    font-size: 14px;
+    border: 1px solid #DADADA;
+}
+
+QTableCornerButton::section {
+    background-color: #4CAF50;  /* Esquina superior izquierda de la tabla */
+}
+
+QTableWidget::item {
+    padding: 10px;  /* Espaciado en las celdas */
+    border-bottom: 1px solid #DADADA;  /* Línea entre las celdas */
+}
+
+QLineEdit {
+    border: 3px solid #4CAF50;  /* Borde verde */
+    border-radius: 8px;
+    padding: 8px;
+    background-color: #FFFFFF;  /* Fondo blanco */
+    font-size: 16px;
+    color: #000;
+}
+
+QLineEdit:focus {
+    border: 2px solid #22aeff;  /* Cambia a color naranja al enfocarse */
+    background-color: #FFFBE6;  /* Fondo ligeramente diferente al enfocarse */
+}
+
+QLabel {
+    color: #ffffff;  /* Color del texto */
+    font-size: 26px;
+    padding: 5px;
+}
+
+QLabel#titulo {
+    font-size: 24px;  /* Tamaño de fuente más grande para títulos */
+    font-weight: bold;
+    color: #4CAF50;  /* Color verde para títulos */
+}
