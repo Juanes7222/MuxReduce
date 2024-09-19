@@ -1,13 +1,3 @@
-# -*- coding: utf-8 -*-
-
-################################################################################
-## Form generated from reading UI file 'menu_principal.ui'
-##
-## Created by: Qt User Interface Compiler version 6.7.2
-##
-## WARNING! All changes made in this file will be lost when recompiling UI file!
-################################################################################
-
 import sys 
 from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
     QMetaObject, QObject, QPoint, QRect,
@@ -23,7 +13,7 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 sys.path.append(fr"{BASE_DIR}")
 from utils import procesar_variables, to_list, validar_pesos, obtener_cant_vars
-from GUI.Solution_ui import Ui_Dialog
+from GUI.salida_ui import SalidaMenu
 import controller
 import src.img.fondo_rc
 
@@ -57,11 +47,8 @@ class Ui_MainWindow(QMainWindow):
         font1.setBold(True)
         self.label_minterminos.setFont(font1)
         self.label_minterminos.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        
         self.calcular = QPushButton(self.centralwidget)
         self.calcular.setObjectName(u"calcular")
-        
-
         self.calcular.setGeometry(QRect(310, 460, 301, 71))
         font2 = QFont()
         font2.setPointSize(17)
@@ -74,8 +61,8 @@ class Ui_MainWindow(QMainWindow):
 "                                   border: 2px solid rgb(182, 182, 182);\n"
 "                                   border-radius: 8px;\n"
 "}")
-        self.calcular
-        self.calcular.clicked.connect(self.event_calc)
+        # self.calcular
+        # self.calcular.clicked.connect(self.event_calc)
         self.minterminos = QLineEdit(self.centralwidget)
         self.minterminos.setObjectName(u"minterminos")
         self.minterminos.setGeometry(QRect(220, 190, 541, 51))
@@ -210,11 +197,8 @@ class Ui_MainWindow(QMainWindow):
             return
         self.hide()
        
-        self.salida = Ui_Dialog(self)
+        self.salida = SalidaMenu(self)
         self.salida.show()
-
-
-
 
 if __name__ == "__main__":
     import sys
