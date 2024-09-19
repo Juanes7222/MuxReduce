@@ -6,7 +6,7 @@ def main(minterminos: str):
     minterminos = list(map(int, minterminos))
     minterminos.sort()
     resultado = reduccion(minterminos, variables)
-    print(resultado)
+    return resultado
 
 def convertir_a_binario(minterms_str):
     minterms = list(map(int, minterms_str.split(',')))

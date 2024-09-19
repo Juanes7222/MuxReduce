@@ -22,8 +22,9 @@ from string import ascii_uppercase
 from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 sys.path.append(fr"{BASE_DIR}")
-from utils import procesar_variables, to_list, validar_pesos, obtener_cant_vars
-from GUI.Solution_ui import Ui_Dialog
+from utils import procesar_variables, validar_pesos
+# from GUI.Solution_ui import Ui_Dialog
+from GUI.salida_ui import SalidaMenu
 import controller
 import src.img.fondo_rc
 
@@ -210,7 +211,7 @@ class Ui_MainWindow(QMainWindow):
             return
         self.hide()
        
-        self.salida = Ui_Dialog(self)
+        self.salida = SalidaMenu(self)
         self.salida.show()
 
 
