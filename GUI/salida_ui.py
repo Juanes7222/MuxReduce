@@ -19,11 +19,11 @@ from PySide6.QtWidgets import (QApplication, QHeaderView, QLabel, QMainWindow,
     QPushButton, QScrollBar, QSizePolicy, QStatusBar,
     QTableWidget, QTableWidgetItem, QWidget, QAbstractItemView)
 from pathlib import Path
-# from GUI.Respuesta_ui import SalidaMenu2
+#from GUI.Respuesta_ui import Ui_MainWindow
 BASE_DIR = Path(__file__).resolve().parent.parent
 import sys 
 sys.path.append(fr"{BASE_DIR}")
-
+import DATA as DT
 import src.videos.next_rc
 import src.videos.back_rc
 
@@ -111,23 +111,19 @@ class SalidaMenu(QMainWindow):
 
         QMetaObject.connectSlotsByName(self)
 
-         # Inicializar el índice actual
+         
         self.current_index = 0
-        # Suponiendo que DATA.APAREAMIENTOS es la lista de diccionarios
-        # self.data_list = DATA.APAREAMIENTOS
-        # Cargar el primer diccionario al iniciar
-        # self.load_dict(self.data_list[self.current_index])
-    # setupUi
+        self.load_dict(DT.lista_binarios)
+        
 
     def resizeEvent(self, event):
-        # Redimensionar la imagen de fondo cuando la ventana cambie de tamaño
-        # pixmap = QPixmap("ruta/a/tu/imagen.jpg")  # Vuelve a cargar la imagen
+        
         scaled_pixmap = self.pixmap.scaled(self.size(), Qt.KeepAspectRatioByExpanding, Qt.SmoothTransformation)
         palette = self.palette()
         palette.setBrush(QPalette.Window, QBrush(scaled_pixmap))
         self.setPalette(palette)
 
-        # Llamar al evento de redimensionamiento original
+        
         super().resizeEvent(event)
 
     #################################Style TAble
@@ -164,8 +160,27 @@ class SalidaMenu(QMainWindow):
         self.Tabla_minterminos.setShowGrid(True)
         self.Tabla_minterminos.setAlternatingRowColors(True)
 
-
-
+    def load_dict(self, data_dict):
+        self.Tabla_minterminos.setRowCount(0)  # Limpia la tabla
+        
+        # Obtén el número de bits (el valor máximo en el diccionario determina el número de bits)
+        max_bits = len(bin(max(data_dict.keys()))[2:])
+        
+        # Establece las cabeceras de la tabla
+        self.Tabla_minterminos.setColumnCount(2)
+        self.Tabla_minterminos.setHorizontalHeaderLabels(['Número Decimal', 'Número Binario'])
+        
+        for row, (decimal_number, binary_vector) in enumerate(data_dict.items()):
+            # Crea un nuevo ítem para la columna del número decimal
+            decimal_item = QTableWidgetItem(str(decimal_number))
+            
+            # Asegúrate de que el valor binario tenga el número correcto de bits (rellenar con ceros a la izquierda)
+            binary_item = QTableWidgetItem(format(decimal_number, f'0{max_bits}b'))  # Rellenar con ceros a la izquierda
+            
+            # Añadir los ítems a la tabla
+            self.Tabla_minterminos.insertRow(row)
+            self.Tabla_minterminos.setItem(row, 0, decimal_item)
+            self.Tabla_minterminos.setItem(row, 1, binary_item)
 
 
 
@@ -175,75 +190,30 @@ class SalidaMenu(QMainWindow):
         self.nueva_funcion.setText(QCoreApplication.translate("MainWindow", u"Nueva funci\u00f3n", None))
         self.back.setText("")
         self.next.setText("")
-    # retranslateUi
-
-    # def load_dict(self, data_dict):
-    #     # Limpiar la tabla antes de cargar nuevos datos
-    #     self.Tabla_minterminos.clearContents()
-        
-    #     no_apareados = DATA.IMPLICANTES  # Lista de elementos no apareados organizados en sublistas
-        
-    #     # Configurar las columnas de la tabla
-    #     self.Tabla_minterminos.setColumnCount(3)
-    #     self.Tabla_minterminos.setRowCount(len(data_dict))
-    #     self.Tabla_minterminos.setHorizontalHeaderLabels(["DECIMAL", "BINARIO", "APAREADO"])
-
-    #     # Ocultar los encabezados verticales
-    #     self.Tabla_minterminos.verticalHeader().setVisible(False)
-
-    #     # Desactivar edición en la tabla
-    #     self.Tabla_minterminos.setEditTriggers(QAbstractItemView.NoEditTriggers)
-
-        
-
-    #     # Iterar por cada elemento del diccionario
-    #     for row, (key, value) in enumerate(data_dict.items()):
-    #             # Convertir la clave (key) en una cadena de números separados por comas
-    #         decimal_string = ' '.join(key)  # Asegúrate de que key sea una lista de cadenas
-    #         # Convertir el valor (value) a una cadena si es necesario
-    #         binary_string = ''.join(value)  # Asegúrate de que value sea una lista de cadenas
-
-    #         # Agregar los valores a las columnas "DECIMAL" y "BINARIO"
-    #         self.Tabla_minterminos.setItem(row, 0, QTableWidgetItem(decimal_string))
-    #         self.Tabla_minterminos.setItem(row, 1, QTableWidgetItem(binary_string))
-
-    #         # Verificar si el valor está en alguna sublista de no_apareados
-    #         apareado = "✓"  # Por defecto, se marcará como "APAREADO"
-    #         value_string = ''.join(value)  # Convertir el valor a una cadena para la comparación
-    #         for sublist in no_apareados:
-    #             sublist_string = ''.join(sublist)  # Convertir la sublista a una cadena
-    #             if value_string == sublist_string:
-    #                 apareado = "✗"  # Si el valor se encuentra en la lista de no apareados, marcar como "NO APAREADO"
-    #                 break  # No es necesario seguir buscando si ya se encontró
-
-    #         # Agregar el resultado en la columna "APAREADO"
-    #         self.Tabla_minterminos.setItem(row, 2, QTableWidgetItem(apareado))
-
-
-
+    
 
 
     def on_gif_click_next(self, event):
-        ...
-        # Asegúrate de que no estás en la última tabla
-        # print(f"Current index: {self.current_index}")
-        # print(f"Data list length: {len(self.data_list)}")
-        
-        # if self.current_index < len(self.data_list) - 1:
-        #     self.current_index += 1
-        #     self.load_dict(self.data_list[self.current_index])
-        # else:
-        #     # Si estás en la última tabla, abre la nueva ventana
-        #     self.hide()
-        #     self.Respuesta = SalidaMenu2(self.menu, self)
-        #     self.Respuesta.show()
+        # Ocultar la tabla y otros elementos cuando se presiona 'next'
+        self.Tabla_minterminos.hide()  # Oculta la tabla
+        self.ecuacion.hide()  # Oculta también el texto de la ecuación, si es necesario
+
+        # Incrementar el índice actual si hay más tablas
+        if self.current_index < len(self.data_list) - 1:
+            self.current_index += 1
+        else:
+            # Si estás en la última tabla, abre una nueva ventana o realiza otra acción
+            self.hide()
+            #self.Respuesta = SalidaMenu2(self.menu, self)
+            self.Respuesta.show()
 
     def on_gif_click_back(self, event):
-        """Muestra el diccionario anterior en la lista."""
-        if self.current_index > 0:
-            self.current_index -= 1
-            self.load_dict(self.data_list[self.current_index])
-            
+        # Mostrar la tabla y otros elementos al presionar 'back'
+        print('Click')
+        #self.salida = Ui_MainWindow(self)
+        #self.salida.show()
+
+
     def back_menu(self):
         self.hide()
         self.menu.show()
@@ -251,7 +221,6 @@ class SalidaMenu(QMainWindow):
 if __name__ == "__main__":
 
     app = QApplication(sys.argv)
-    # app.setStyleSheet(Path("sources/qss/styles_main.qss").read_text())
     ui = SalidaMenu()
 
     ui.show()
