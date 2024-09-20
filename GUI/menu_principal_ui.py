@@ -155,7 +155,7 @@ class Ui_MainWindow(QMainWindow):
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
-        self.Titulo_principal.setText(QCoreApplication.translate("MainWindow", u"Mc. Closkey", None))
+        self.Titulo_principal.setText(QCoreApplication.translate("MainWindow", u"Reducci\u00f3n Mux", None))
         self.label_minterminos.setText(QCoreApplication.translate("MainWindow", u"Minterminos", None))
         self.calcular.setText(QCoreApplication.translate("MainWindow", u"Calcular", None))
         # self.label_cantidad.setText(QCoreApplication.translate("MainWindow", u"Cantidad de terminos", None))

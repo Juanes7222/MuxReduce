@@ -19,7 +19,7 @@ from PySide6.QtWidgets import (QApplication, QHeaderView, QLabel, QMainWindow,
     QPushButton, QScrollBar, QSizePolicy, QStatusBar,
     QTableWidget, QTableWidgetItem, QWidget, QAbstractItemView)
 from pathlib import Path
-#from GUI.Respuesta_ui import Ui_MainWindow
+from GUI.Respuesta_ui import SalidaMenu2
 BASE_DIR = Path(__file__).resolve().parent.parent
 import sys 
 sys.path.append(fr"{BASE_DIR}")
@@ -63,7 +63,7 @@ class SalidaMenu(QMainWindow):
 "            }")
         self.nueva_funcion = QPushButton(self.centralwidget)
         self.nueva_funcion.setObjectName(u"nueva_funcion")
-        self.nueva_funcion.setGeometry(QRect(330, 110, 211, 41))
+        self.nueva_funcion.setGeometry(QRect(200, 60, 211, 41))
         font = QFont()
         font.setPointSize(14)
         font.setBold(True)
@@ -71,28 +71,19 @@ class SalidaMenu(QMainWindow):
         self.nueva_funcion.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.nueva_funcion.setStyleSheet(u"QPushButton{\n"
 "                                 padding: 7px;\n"
-"                                   background-color: #f1eb2c;\n"
+"                                   background-color: #f7dd3b;\n"
 "                                   border: 2px solid rgb(182, 182, 182);\n"
 "                                   border-radius: 8px;\n"
 "}")
-        self.back = QLabel(self.centralwidget)
-        self.back.setObjectName(u"label")
-        self.back.setGeometry(QRect(20, 610, 81, 51))
-        self.next = QLabel(self.centralwidget)
-        self.next.setObjectName(u"label_2")
-        self.next.setGeometry(QRect(820, 600, 81, 51))
-        self.video_player_next.setScaledSize(self.next.size())
-        self.video_player_back.setScaledSize(self.back.size())
         
-        self.back.setMovie(self.video_player_back)
-        self.next.setMovie(self.video_player_next)
-        self.next.setCursor(QCursor(Qt.PointingHandCursor))
-        self.back.setCursor(QCursor(Qt.PointingHandCursor))
-        self.video_player_back.start()
-        self.video_player_next.start()
-        # Asignar las señales de clic de los GIFs
-        self.back.mousePressEvent = self.on_gif_click_back
-        self.next.mousePressEvent = self.on_gif_click_next
+        self.boton_reduccion = QPushButton(self.centralwidget)
+        self.boton_reduccion.setObjectName(u"reduccion")
+        self.boton_reduccion.setGeometry(QRect(510, 60, 211, 41))
+        self.boton_reduccion.setFont(font)
+        self.boton_reduccion.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
+        self.boton_reduccion.setStyleSheet(u"")
+        
+        self.boton_reduccion.clicked.connect(self.reduccion)
         self.setCentralWidget(self.centralwidget)
         self.statusbar = QStatusBar(self)
         self.statusbar.setObjectName(u"statusbar")
@@ -131,7 +122,7 @@ class SalidaMenu(QMainWindow):
     # Ajustar el estilo de las cabeceras
         self.Tabla_minterminos.horizontalHeader().setStyleSheet(
             "QHeaderView::section { "
-            "background-color: #f1eb2c; "
+            "background-color: #f7dd3b; "
             "border: 1px solid #d0d0d0; "
             "padding: 4px; "
             "font-weight: bold; "
@@ -188,31 +179,14 @@ class SalidaMenu(QMainWindow):
         self.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
         self.ecuacion.setText("")
         self.nueva_funcion.setText(QCoreApplication.translate("MainWindow", u"Nueva funci\u00f3n", None))
-        self.back.setText("")
-        self.next.setText("")
+        self.boton_reduccion.setText(QCoreApplication.translate("MainWindow", u"Reducci\u00f3n", None))
+        # self.back.setText("")
+        # self.next.setText("")
     
-
-
-    def on_gif_click_next(self, event):
-        # Ocultar la tabla y otros elementos cuando se presiona 'next'
-        self.Tabla_minterminos.hide()  # Oculta la tabla
-        self.ecuacion.hide()  # Oculta también el texto de la ecuación, si es necesario
-
-        # Incrementar el índice actual si hay más tablas
-        if self.current_index < len(self.data_list) - 1:
-            self.current_index += 1
-        else:
-            # Si estás en la última tabla, abre una nueva ventana o realiza otra acción
-            self.hide()
-            #self.Respuesta = SalidaMenu2(self.menu, self)
-            self.Respuesta.show()
-
-    def on_gif_click_back(self, event):
-        # Mostrar la tabla y otros elementos al presionar 'back'
-        print('Click')
-        #self.salida = Ui_MainWindow(self)
-        #self.salida.show()
-
+    def reduccion(self):
+        self.hide()
+        self.respuesta = SalidaMenu2(self.menu, self) 
+        self.respuesta.show()
 
     def back_menu(self):
         self.hide()
