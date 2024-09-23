@@ -30,7 +30,7 @@ def agrupar(diccionario_binario):
         'A': []  
     }
     for clave, lista_bits in diccionario_binario.items():
-        decimal = int("".join(map(str, lista_bits)), 2)  # Convierte la lista de bits a decimal
+        decimal = int("".join(map(str, lista_bits)), 2)  
         if lista_bits[0] == 0: 
             grupos['A´'].append(decimal)
         else:  
@@ -57,7 +57,7 @@ def reduccion(minterminos: list, variables: list):
 
 
 def convertir_a_vector(string_numeros):
-    # Dividir el string por comas y convertir cada parte en un número entero
+    
     vector = [int(num) for num in string_numeros.split(",")]
     return vector
 
