@@ -5,6 +5,7 @@ def main(minterminos: str):
     DT.lista_binarios = convertir_a_binario(minterminos)
     DT.Agrupados = agrupar(DT.lista_binarios)
     variables, _ = utils.procesar_variables(minterminos)
+    DT.variables_eleccion = variables[1:]
     minterminos: list = utils.to_list(minterminos)
     minterminos = list(map(int, minterminos))
     DT.minterms = minterminos
