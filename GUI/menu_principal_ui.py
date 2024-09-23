@@ -178,7 +178,7 @@ class Ui_MainWindow(QMainWindow):
         variables, _ = procesar_variables(vars_list)
         if not variables:
             self.error_cant("", self.minterminos)
-            return
+            return            
         else:
             self.volver_estilo(self.minterminos)
         

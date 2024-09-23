@@ -19,8 +19,8 @@ QPushButton:pressed {
 
 QTableWidget {
     gridline-color: #dadada;  /* Color de las líneas de la cuadrícula */
-    background-color: #F9F9F9;  /* Fondo de la tabla */
-    alternate-background-color: #E0E0E0;  /* Fondo alternado para las filas */
+    background-color: #F9F9F9;  
+    alternate-background-color: #E0E0E0;
     selection-background-color: #FFA07A;  /* Fondo para la fila seleccionada */
     selection-color: #555;  /* Color del texto de la fila seleccionada */
     color: #000;

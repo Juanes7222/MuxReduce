@@ -84,7 +84,7 @@ class SalidaMenu2(QMainWindow):
         self.table = QTableWidget(self.centralwidget)
         self.vertical_layout.addWidget(self.table)
         
-        self.spacer_bottom = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
+        self.spacer_bottom = QSpacerItem(20, 20, QSizePolicy.Minimum, QSizePolicy.Expanding)
         self.vertical_layout.addItem(self.spacer_bottom)
 
         self.regresar = QPushButton(self.centralwidget)
@@ -138,6 +138,8 @@ class SalidaMenu2(QMainWindow):
             for col, value in enumerate(values):
                 # Crear el QTableWidgetItem con el valor
                 item = QTableWidgetItem(str(value))
+                if value in minterms:
+                    item.setData(Qt.BackgroundRole, QColor("#e1ff69"))
                 item.setFlags(Qt.ItemFlag.ItemIsSelectable | Qt.ItemFlag.ItemIsEnabled)
 
                 print(f"Valor en la tabla (fila {row}, col {col}): {value}")

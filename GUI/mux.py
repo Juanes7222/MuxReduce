@@ -11,9 +11,9 @@
 
 import sys
 import DATA as DT
-from PySide6.QtCore import Qt, QRect, QPoint, QCoreApplication
-from PySide6.QtGui import QPainter, QPolygon, QColor, QPen, QCursor, QFont
-from PySide6.QtWidgets import (QApplication, QMainWindow, QPushButton, QWidget, QVBoxLayout, QHBoxLayout, QSpacerItem, QSizePolicy, QFrame)
+from PySide6.QtCore import Qt, QRect, QCoreApplication
+from PySide6.QtGui import QCursor, QFont, QPixmap, QPalette, QBrush
+from PySide6.QtWidgets import (QApplication, QMainWindow, QPushButton, QWidget, QVBoxLayout, QHBoxLayout,  QLabel)
 from trapezoide import TrapezoidWidget
 
 
@@ -31,40 +31,77 @@ class Mux(QMainWindow):
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         
-        self.horizontal_layout = QHBoxLayout(self.centralwidget)
-        self.horizontal_layout.setContentsMargins(0, 0, 0, 0)  # Sin márgenes
-
+        self.vertical_layout = QVBoxLayout(self.centralwidget)
+        self.vertical_layout.setContentsMargins(0, 0, 0, 10)  # Sin márgenes
+        self.vertical_layout.setSpacing(3)
+        self.Titulo_principal = QLabel(self.centralwidget)
+        self.Titulo_principal.setObjectName(u"Titulo_principal")
+        self.vertical_layout.addWidget(self.Titulo_principal, alignment=Qt.AlignmentFlag.AlignCenter)
+        font = QFont()
+        font.setFamilies([u"CountryBlueprint"])
+        font.setPointSize(40)
+        font.setWeight(QFont.Black)
+        font.setItalic(False)
+        self.Titulo_principal.setFont(font)
+        self.Titulo_principal.setStyleSheet(u"Qlabel{font-weight: 8000;}")
+        self.Titulo_principal.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.trapezoid_widget = TrapezoidWidget(self.centralwidget)
         
-        self.horizontal_layout.addWidget(self.trapezoid_widget, alignment=Qt.AlignmentFlag.AlignCenter)
-        # Añadir el trapecio al layout horizontal
+        self.vertical_layout.addWidget(self.trapezoid_widget, alignment=Qt.AlignmentFlag.AlignCenter)
         self.pin_count = len(DT.Respuesta_final)
         
-
-        # self.nueva_funcion = QPushButton(self.centralwidget)
-        # self.nueva_funcion.setObjectName(u"nueva_funcion")
-        # self.nueva_funcion.setGeometry(QRect(200, 60, 211, 41))
-        # font = QFont()
-        # font.setPointSize(14)
-        # font.setBold(True)
-        # self.nueva_funcion.setFont(font)
-        # self.nueva_funcion.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
-        # self.nueva_funcion.setStyleSheet(u"QPushButton{\n"
-        #                                  " padding: 7px;\n"
-        #                                  " background-color: #f7dd3b;\n"
-        #                                  " border: 2px solid rgb(182, 182, 182);\n"
-        #                                  " border-radius: 8px;\n"
-        #                                  "}")
+        self.horizontal_layout = QHBoxLayout()
         
-        # self.nueva_funcion.setMaximumSize(211, 41)
-        # self.nueva_funcion.clicked.connect(self.back_menu)
-        # self.horizontal_layout.addWidget(self.nueva_funcion, alignment=Qt.AlignmentFlag.AlignHCenter)
-
+        self.nueva_funcion = QPushButton(self.centralwidget)
+        self.nueva_funcion.setObjectName(u"nueva_funcion")
+        self.nueva_funcion.setGeometry(QRect(200, 60, 211, 41))
+        font = QFont()
+        font.setPointSize(14)
+        font.setBold(True)
+        self.nueva_funcion.setFont(font)
+        self.nueva_funcion.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
+        self.nueva_funcion.setStyleSheet(u"QPushButton{\n"
+                                         " padding: 7px;\n"
+                                         " background-color: #f7dd3b;\n"
+                                         " border: 2px solid rgb(182, 182, 182);\n"
+                                         " border-radius: 8px;\n"
+                                         "}")
+        
+        self.nueva_funcion.setMaximumSize(211, 41)
+        self.nueva_funcion.clicked.connect(self.back_menu)
+        
+        self.back = QPushButton(self.centralwidget)
+        self.back.setObjectName(u"regresar")
+        self.back.setGeometry(QRect(510, 60, 211, 41))
+        self.back.setFont(font)
+        self.back.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
+        self.back.clicked.connect(self.back_window)
+        
+        self.horizontal_layout.addWidget(self.nueva_funcion, alignment=Qt.AlignmentFlag.AlignCenter)
+        self.horizontal_layout.addWidget(self.back, alignment=Qt.AlignmentFlag.AlignCenter)
+        
+        self.vertical_layout.addLayout(self.horizontal_layout)
+        self.pixmap = QPixmap("src/img/fondo.jpg") 
+        palette = QPalette()
+        palette.setBrush(QPalette.Window, QBrush(self.pixmap))
+        self.setPalette(palette)
         MainWindow.setCentralWidget(self.centralwidget)
+        self.retranslateUi(MainWindow)
         
     def retranslateUi(self, MainWindow: QMainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate("Mux", "Mux", None))
-        # self.nueva_funcion.setText(QCoreApplication.translate("Mux", "Nueva función", None))
+        self.Titulo_principal.setText(QCoreApplication.translate("Mux", u"Mux resultante", None))
+        self.nueva_funcion.setText(QCoreApplication.translate("Mux", "Nueva función", None))
+        self.back.setText(QCoreApplication.translate("Mux", u"Regresar", None))
+        
+        
+    def resizeEvent(self, event):
+        scaled_pixmap = self.pixmap.scaled(self.size(), Qt.KeepAspectRatioByExpanding, Qt.SmoothTransformation)
+        palette = self.palette()
+        palette.setBrush(QPalette.Window, QBrush(scaled_pixmap))
+        self.setPalette(palette)
+
+        super().resizeEvent(event)
                 
     def back_window(self):
         self.hide()
@@ -77,7 +114,7 @@ class Mux(QMainWindow):
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     MainWindow = QMainWindow()
-    Back = QMainWindow()  # Un placeholder para el botón de regreso
+    Back = QMainWindow() 
     mux_window = Mux(MainWindow, Back)
     MainWindow.show()
     sys.exit(app.exec())

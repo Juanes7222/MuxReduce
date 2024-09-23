@@ -5,6 +5,9 @@ from string import ascii_uppercase
 def validar_pesos(pesos):
     match = re.match(r"^\s*(?:\d+,\s*)*(?:\d+)\s*$", pesos)
     if match:
+        l = to_list(match.string)
+        if int(l[-1]) <= 1:
+            return False
         return True
     return False
 
