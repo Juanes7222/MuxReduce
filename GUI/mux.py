@@ -13,7 +13,7 @@ import sys
 import DATA as DT
 from PySide6.QtCore import Qt, QRect, QCoreApplication
 from PySide6.QtGui import QCursor, QFont, QPixmap, QPalette, QBrush
-from PySide6.QtWidgets import (QApplication, QMainWindow, QPushButton, QWidget, QVBoxLayout, QHBoxLayout,  QLabel)
+from PySide6.QtWidgets import (QApplication, QMainWindow, QPushButton, QWidget, QVBoxLayout, QHBoxLayout, QLabel, QScrollArea)
 from trapezoide import TrapezoidWidget
 
 
@@ -28,15 +28,29 @@ class Mux(QMainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName("MainWindow")
         MainWindow.resize(913, 697)
+        
+        # Crear un widget central
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
+
+        # Crear un área de scroll
+        self.scroll_area = QScrollArea(self.centralwidget)
+        self.scroll_area.setWidgetResizable(True)  # Hacer que el área se ajuste automáticamente al contenido
         
-        self.vertical_layout = QVBoxLayout(self.centralwidget)
-        self.vertical_layout.setContentsMargins(0, 0, 0, 10)  # Sin márgenes
+        # Crear un contenedor dentro del área de scroll
+        self.scroll_content = QWidget()
+        self.scroll_content.setObjectName("scroll_content")
+
+        # Crear un layout vertical para el contenido dentro del scroll
+        self.vertical_layout = QVBoxLayout(self.scroll_content)
+        self.vertical_layout.setContentsMargins(0, 0, 0, 10)
         self.vertical_layout.setSpacing(3)
-        self.Titulo_principal = QLabel(self.centralwidget)
+        
+        # Agregar un título principal
+        self.Titulo_principal = QLabel(self.scroll_content)
         self.Titulo_principal.setObjectName(u"Titulo_principal")
         self.vertical_layout.addWidget(self.Titulo_principal, alignment=Qt.AlignmentFlag.AlignCenter)
+        
         font = QFont()
         font.setFamilies([u"CountryBlueprint"])
         font.setPointSize(40)
@@ -45,17 +59,16 @@ class Mux(QMainWindow):
         self.Titulo_principal.setFont(font)
         self.Titulo_principal.setStyleSheet(u"Qlabel{font-weight: 8000;}")
         self.Titulo_principal.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.trapezoid_widget = TrapezoidWidget(self.centralwidget)
-        
+
+        # Agregar un widget personalizado
+        self.trapezoid_widget = TrapezoidWidget(self.scroll_content)
         self.vertical_layout.addWidget(self.trapezoid_widget, alignment=Qt.AlignmentFlag.AlignCenter)
-        self.pin_count = len(DT.Respuesta_final)
-        
+
+        # Botones
         self.horizontal_layout = QHBoxLayout()
         
-        self.nueva_funcion = QPushButton(self.centralwidget)
+        self.nueva_funcion = QPushButton(self.scroll_content)
         self.nueva_funcion.setObjectName(u"nueva_funcion")
-        self.nueva_funcion.setGeometry(QRect(200, 60, 211, 41))
-        font = QFont()
         font.setPointSize(14)
         font.setBold(True)
         self.nueva_funcion.setFont(font)
@@ -66,13 +79,11 @@ class Mux(QMainWindow):
                                          " border: 2px solid rgb(182, 182, 182);\n"
                                          " border-radius: 8px;\n"
                                          "}")
-        
         self.nueva_funcion.setMaximumSize(211, 41)
         self.nueva_funcion.clicked.connect(self.back_menu)
         
-        self.back = QPushButton(self.centralwidget)
+        self.back = QPushButton(self.scroll_content)
         self.back.setObjectName(u"regresar")
-        self.back.setGeometry(QRect(510, 60, 211, 41))
         self.back.setFont(font)
         self.back.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.back.clicked.connect(self.back_window)
@@ -81,10 +92,20 @@ class Mux(QMainWindow):
         self.horizontal_layout.addWidget(self.back, alignment=Qt.AlignmentFlag.AlignCenter)
         
         self.vertical_layout.addLayout(self.horizontal_layout)
-        self.pixmap = QPixmap("src/img/fondo.jpg") 
+
+        # Establecer el contenido del área de scroll
+        self.scroll_area.setWidget(self.scroll_content)
+
+        # Añadir el área de scroll al layout principal
+        self.main_layout = QVBoxLayout(self.centralwidget)
+        self.main_layout.addWidget(self.scroll_area)
+
+        # Configurar el fondo de la ventana
+        self.pixmap = QPixmap("src/img/fondo.jpg")
         palette = QPalette()
         palette.setBrush(QPalette.Window, QBrush(self.pixmap))
         self.setPalette(palette)
+
         MainWindow.setCentralWidget(self.centralwidget)
         self.retranslateUi(MainWindow)
         
@@ -94,13 +115,11 @@ class Mux(QMainWindow):
         self.nueva_funcion.setText(QCoreApplication.translate("Mux", "Nueva función", None))
         self.back.setText(QCoreApplication.translate("Mux", u"Regresar", None))
         
-        
     def resizeEvent(self, event):
         scaled_pixmap = self.pixmap.scaled(self.size(), Qt.KeepAspectRatioByExpanding, Qt.SmoothTransformation)
         palette = self.palette()
         palette.setBrush(QPalette.Window, QBrush(scaled_pixmap))
         self.setPalette(palette)
-
         super().resizeEvent(event)
                 
     def back_window(self):
@@ -114,7 +133,7 @@ class Mux(QMainWindow):
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     MainWindow = QMainWindow()
-    Back = QMainWindow() 
+    Back = QMainWindow()
     mux_window = Mux(MainWindow, Back)
     MainWindow.show()
     sys.exit(app.exec())

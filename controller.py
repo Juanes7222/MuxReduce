@@ -1,6 +1,7 @@
 import utils
 import DATA as DT
 
+
 def main(minterminos: str):
     DT.lista_binarios = convertir_a_binario(minterminos)
     DT.Agrupados = agrupar(DT.lista_binarios)
