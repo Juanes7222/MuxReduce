@@ -42,7 +42,11 @@ class TablaReduccion(QTableWidget):
                 self.setItem(row, col, item) 
                 if value in minterms:
                     painter.drawRect(self.visualRect(self.model().index(row, col)).adjusted(-1, -1, 1, 1))
-                    
+        
+        pen = QPen(QColor(89, 255, 0), 4)
+        pen.setCapStyle(Qt.RoundCap)
+        pen.setJoinStyle(Qt.RoundJoin)
+        painter.setPen(pen)      
         # Rellenar la tercera fila (índice 2) con el vector Respuesta_final
         for col, value in enumerate(respuesta_final):
             item = QTableWidgetItem(str(value))
@@ -52,6 +56,8 @@ class TablaReduccion(QTableWidget):
             
             # Establecer el item en la fila 2 (tercera fila) de la tabla
             self.setItem(2, col, item)
+            painter.drawRect(self.visualRect(self.model().index(2, col)).adjusted(-1, -1, 1, 1))
+            
 
         # Actualizar las etiquetas del encabezado vertical
         self.setVerticalHeaderLabels(list(data.keys()) + ["Respuesta Final"])
