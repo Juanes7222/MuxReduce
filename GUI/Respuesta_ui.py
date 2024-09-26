@@ -9,11 +9,12 @@
 ################################################################################
 import sys
 from PySide6.QtCore import (QCoreApplication, QMetaObject, QRect, Qt)
-from PySide6.QtGui import QCursor, QFont, QPixmap, QPalette, QBrush, QColor
+from PySide6.QtGui import QCursor, QFont, QPixmap, QPalette, QBrush, QColor, QPainter, QPen
 from PySide6.QtWidgets import (QApplication, QMainWindow, QPushButton, QLabel, QWidget, QStatusBar, QVBoxLayout, QHBoxLayout, QSpacerItem, QSizePolicy, QTableWidget, QTableWidgetItem, QFrame)
 # from GUI.comprobacion_ui import Ui_Comprobacion
 from GUI.mux import Mux
-import DATA as DT
+from TablaReduccion import TablaReduccion
+# import DATA as DT
 
 class SalidaMenu2(QMainWindow):
     def __init__(self, Main, Back):
@@ -30,7 +31,7 @@ class SalidaMenu2(QMainWindow):
         self.centralwidget.setObjectName("centralwidget")
 
         self.vertical_layout = QVBoxLayout(self.centralwidget)
-        self.vertical_layout.setContentsMargins(0, 0, 0, 0)
+        self.vertical_layout.setContentsMargins(0, 10, 0, 0)
 
         self.horizontal_layout = QHBoxLayout()
         self.horizontal_layout.setContentsMargins(0, 0, 0, 0)
@@ -81,7 +82,7 @@ class SalidaMenu2(QMainWindow):
         self.vertical_layout.addItem(self.spacer_middle)
 
         # Añadimos el QTableWidget para mostrar el diccionario como tabla
-        self.table = QTableWidget(self.centralwidget)
+        self.table = TablaReduccion(self.centralwidget)
         self.vertical_layout.addWidget(self.table)
         
         self.spacer_bottom = QSpacerItem(20, 20, QSizePolicy.Minimum, QSizePolicy.Expanding)
@@ -108,7 +109,7 @@ class SalidaMenu2(QMainWindow):
         QMetaObject.connectSlotsByName(MainWindow)
 
         # Cargar datos del diccionario en la tabla
-        self.load_dict_data()
+        # self.load_dict_data()
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", "MainWindow", None))
@@ -116,50 +117,6 @@ class SalidaMenu2(QMainWindow):
         self.label.setText(QCoreApplication.translate("MainWindow", "SOLUCIÓN", None))
         self.regresar.setText(QCoreApplication.translate("MainWindow", u"Regresar", None))
         self.boton_mux.setText(QCoreApplication.translate("MainWindow", u"Ver Mux", None))
-
-
-    def load_dict_data(self):
-        data = DT.Agrupados  # Diccionario
-        minterms = DT.minterms  # Vector de números en formato entero
-        respuesta_final = DT.Respuesta_final  # Vector que se mostrará en la tercera fila
-
-        print("Datos del diccionario:", data)
-        print("Minterms:", minterms)
-
-        rows = len(data) + 1  # Añadir una fila extra para la Respuesta_final
-        cols = max(len(values) for values in data.values())
-
-        self.table.setRowCount(rows)  # Aumentar el número de filas
-        self.table.setColumnCount(cols)
-        self.table.horizontalHeader().setVisible(False)
-
-        # Rellenar la tabla con el diccionario Agrupados
-        for row, (key, values) in enumerate(data.items()):
-            for col, value in enumerate(values):
-                # Crear el QTableWidgetItem con el valor
-                item = QTableWidgetItem(str(value))
-                if value in minterms:
-                    item.setData(Qt.BackgroundRole, QColor("#e1ff69"))
-                item.setFlags(Qt.ItemFlag.ItemIsSelectable | Qt.ItemFlag.ItemIsEnabled)
-
-                print(f"Valor en la tabla (fila {row}, col {col}): {value}")
-                
-                # Establecer el item en la tabla
-                self.table.setItem(row, col, item)
-
-        # Rellenar la tercera fila (índice 2) con el vector Respuesta_final
-        for col, value in enumerate(respuesta_final):
-            item = QTableWidgetItem(str(value))
-            item.setFlags(Qt.ItemFlag.ItemIsSelectable | Qt.ItemFlag.ItemIsEnabled)
-            
-            print(f"Valor en Respuesta_final (col {col}): {value}")
-            
-            # Establecer el item en la fila 2 (tercera fila) de la tabla
-            self.table.setItem(2, col, item)
-
-        # Actualizar las etiquetas del encabezado vertical
-        self.table.setVerticalHeaderLabels(list(data.keys()) + ["Respuesta Final"])
-
 
     def mostrar_mux(self):
         self.hide()
